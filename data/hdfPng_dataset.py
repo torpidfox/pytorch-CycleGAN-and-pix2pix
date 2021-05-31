@@ -42,7 +42,11 @@ class HdfPngDataset(BaseDataset):
                             default='A',
                             choices=['A', 'B'],
                             help='index of the dataset in hdf format')
-        parser.add_argument('--new_dataset_option', type=float, default=1.0, help='new dataset option')
+        
+        parser.add_argument('--aug_rotate', action='store_true', help='add random rotations for augmentation')
+        parser.add_argument('--aug_noise', action='store_true', help='add random noise to hdf dataset for augmentation')
+        
+        
         parser.set_defaults(input_nc=1, output_nc=1, preprocess='resize and crop', crop_size=32)  # specify dataset-specific default values
         
         return parser
@@ -70,7 +74,7 @@ class HdfPngDataset(BaseDataset):
         self.png_image_paths = sorted(make_dataset(opt.dataroot + f'/train{self.png_label}', opt.max_dataset_size))
         self.png_size = len(self.png_image_paths)
         
-        self.transform_hdf = get_transform(self.opt, grayscale=True)
+        self.transform_hdf = get_transform(self.opt, grayscale=True, noise=self.opt.aug_noise)
         self.transform_png = get_transform(self.opt, grayscale=True)
 
     def __getitem__(self, index):

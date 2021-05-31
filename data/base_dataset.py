@@ -9,6 +9,8 @@ from PIL import Image
 import torchvision.transforms as transforms
 from abc import ABC, abstractmethod
 
+from custom_transforms.gaussian_noise import AddGaussianNoise
+
 
 class BaseDataset(data.Dataset, ABC):
     """This class is an abstract base class (ABC) for datasets.
@@ -78,12 +80,15 @@ def get_params(opt, size):
     return {'crop_pos': (x, y), 'flip': flip}
 
 
-def get_transform(opt, params=None, grayscale=False, method=Image.BICUBIC, convert=True):
+def get_transform(opt, params=None, noise=False, grayscale=False, method=Image.BICUBIC, convert=True):
     transform_list = []
     if grayscale:
         transform_list.append(transforms.Grayscale(1))
+        
+    if opt.aug_rotate:
+        transform_list.append(transforms.RandomRotation(90))
+        
     if 'resize' in opt.preprocess:
-        print(opt.load_size)
         osize = [opt.load_size, opt.load_size]
         transform_list.append(transforms.Resize(osize, method))
     elif 'scale_width' in opt.preprocess:
@@ -110,6 +115,10 @@ def get_transform(opt, params=None, grayscale=False, method=Image.BICUBIC, conve
             transform_list += [transforms.Normalize((0.5,), (0.5,))]
         else:
             transform_list += [transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))]
+    
+    if noise:
+        transform_list.append(AddGaussianNoise(0.0, 0.1))
+    
     return transforms.Compose(transform_list)
 
 
