@@ -70,7 +70,7 @@ class HdfPngDataset(BaseDataset):
         self.png_label = 'B' if opt.hdf_dataset == 'A' else 'A'
         hdf_file = h5py.File(opt.dataroot + f'/train{opt.hdf_dataset}.hdf', 'r')['volumes']
         
-        self.hdf_dataset = hdf_file.get('raw').value
+        self.hdf_dataset = hdf_file.get('raw')[()]  
         self.png_image_paths = sorted(make_dataset(opt.dataroot + f'/train{self.png_label}', opt.max_dataset_size))
         self.png_size = len(self.png_image_paths)
         
