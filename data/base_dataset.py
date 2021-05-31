@@ -117,7 +117,7 @@ def get_transform(opt, params=None, noise=False, grayscale=False, method=Image.B
             transform_list += [transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))]
     
     if noise:
-        transform_list.append(AddGaussianNoise(0.0, 0.1))
+        transform_list.append(AddGaussianNoise(0.0, 0.05))
     
     return transforms.Compose(transform_list)
 

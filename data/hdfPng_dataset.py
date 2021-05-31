@@ -47,7 +47,7 @@ class HdfPngDataset(BaseDataset):
         parser.add_argument('--aug_noise', action='store_true', help='add random noise to hdf dataset for augmentation')
         
         
-        parser.set_defaults(input_nc=1, output_nc=1, preprocess='resize and crop', crop_size=32)  # specify dataset-specific default values
+        parser.set_defaults(input_nc=1, output_nc=1, preprocess='crop', crop_size=64)  # specify dataset-specific default values
         
         return parser
 
@@ -70,7 +70,7 @@ class HdfPngDataset(BaseDataset):
         self.png_label = 'B' if opt.hdf_dataset == 'A' else 'A'
         hdf_file = h5py.File(opt.dataroot + f'/train{opt.hdf_dataset}.hdf', 'r')['volumes']
         
-        self.hdf_dataset = hdf_file.get('raw')[()]  
+        self.hdf_dataset = hdf_file.get('raw')[()]
         self.png_image_paths = sorted(make_dataset(opt.dataroot + f'/train{self.png_label}', opt.max_dataset_size))
         self.png_size = len(self.png_image_paths)
         
