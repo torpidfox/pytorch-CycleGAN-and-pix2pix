@@ -43,9 +43,6 @@ class HdfPngDataset(BaseDataset):
                             choices=['A', 'B'],
                             help='index of the dataset in hdf format')
         
-        parser.add_argument('--aug_rotate', action='store_true', help='add random rotations for augmentation')
-        parser.add_argument('--aug_noise', action='store_true', help='add random noise to hdf dataset for augmentation')
-        
         
         parser.set_defaults(input_nc=1, output_nc=1, preprocess='crop', crop_size=64)  # specify dataset-specific default values
         
