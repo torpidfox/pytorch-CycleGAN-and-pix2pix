@@ -80,7 +80,7 @@ def get_params(opt, size):
     return {'crop_pos': (x, y), 'flip': flip}
 
 
-def get_transform(opt, params=None, noise=False, grayscale=False, method=Image.BICUBIC, convert=True):
+def get_transform(opt, params=None, scale=False, noise=False, grayscale=False, method=Image.BICUBIC, convert=True):
     transform_list = []
     if grayscale:
         transform_list.append(transforms.Grayscale(1))
@@ -93,7 +93,10 @@ def get_transform(opt, params=None, noise=False, grayscale=False, method=Image.B
         transform_list.append(transforms.Resize(osize, method))
     elif 'scale_width' in opt.preprocess:
         transform_list.append(transforms.Lambda(lambda img: __scale_width(img, opt.load_size, opt.crop_size, method)))
-
+    
+    if scale:
+        transform_list.append(transforms.RandomAffine(0, scale=(0.7, 1.5)))
+    
     if 'crop' in opt.preprocess:
         if params is None:
             transform_list.append(transforms.RandomCrop(opt.crop_size))

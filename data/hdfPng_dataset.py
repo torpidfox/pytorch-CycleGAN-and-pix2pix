@@ -1,7 +1,4 @@
-import os
-
 import h5py
-import numpy as np
 from PIL import Image
 
 from data.image_folder import make_dataset
@@ -72,7 +69,7 @@ class HdfPngDataset(BaseDataset):
         self.png_size = len(self.png_image_paths)
         
         self.transform_hdf = get_transform(self.opt, grayscale=True, noise=self.opt.aug_noise)
-        self.transform_png = get_transform(self.opt, grayscale=True)
+        self.transform_png = get_transform(self.opt, scale=opt.aug_scale, grayscale=True)
 
     def __getitem__(self, index):
         """Return a data point and its metadata information.
@@ -88,10 +85,6 @@ class HdfPngDataset(BaseDataset):
         Step 3: convert your data to a PyTorch tensor. You can use helpder functions such as self.transform. e.g., data = self.transform(image)
         Step 4: return a data point as a dictionary.
         """
-        path = 'temp'    # needs to be a string
-        data_A = None    # needs to be a tensor
-        data_B = None    # needs to be a tensor
-        
         png_path = self.png_image_paths [index % len(self.png_image_paths)]
         hdf_idx = index % self.hdf_dataset.shape[0]
         
