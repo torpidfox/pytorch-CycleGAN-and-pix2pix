@@ -10,6 +10,28 @@ class SingleHdfDataset(BaseDataset):
     It can be used for generating CycleGAN results only for one side with the model option '-model test'.
     """
 
+    @staticmethod
+    def modify_commandline_options(parser, is_train):
+        """Add new dataset-specific options, and rewrite default values for existing options.
+
+        Parameters:
+            parser          -- original option parser
+            is_train (bool) -- whether training phase or test phase. You can use this flag to add training-specific or test-specific options.
+
+        Returns:
+            the modified parser.
+        """
+        parser.add_argument('--hdf_dataset',
+                            type=str,
+                            default='A',
+                            choices=['A', 'B'],
+                            help='index of the dataset in hdf format')
+    
+        parser.set_defaults(input_nc=1, output_nc=1, preprocess='crop',
+                            crop_size=64)  # specify dataset-specific default values
+    
+        return parser
+
     def __init__(self, opt):
         """Initialize this dataset class.
 
