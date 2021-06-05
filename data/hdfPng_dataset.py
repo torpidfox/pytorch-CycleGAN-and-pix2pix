@@ -95,7 +95,7 @@ class HdfPngDataset(BaseDataset):
         hdf = self.transform_hdf(hdf_image)
         
         return {self.hdf_label: hdf , self.png_label: png,
-                f'{self.hdf_label}_paths': self.dataroot + f'/train{self.hdf_label}.hdf',
+                f'{self.hdf_label}_paths': self.dataroot + f'/train{self.hdf_label}_{hdf_idx}.png',
                 f'{self.png_label}_paths': png_path}
 
     def __len__(self):

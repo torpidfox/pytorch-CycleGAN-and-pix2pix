@@ -33,11 +33,12 @@ class SingleHdfDataset(BaseDataset):
             A(tensor) - - an image in one domain
             A_paths(str) - - the path of the image
         """
-        A_path = self.A_paths[index]
-        A_img = Image.open(A_path).convert('RGB')
-        A = self.transform(A_img)
-        return {'A': A, 'A_paths': A_path}
+        hdf_idx = index % self.hdf_dataset.shape[0]
+        hdf_image = Image.fromarray(self.hdf_dataset[hdf_idx])
+        hdf = self.transform(hdf_image)
+        
+        return {'A': hdf, 'A_paths': self.dataroot + f'/trainA+_{hdf_idx}.png'}
 
     def __len__(self):
         """Return the total number of images in the dataset."""
-        return len(self.A_paths)
+        return self.hdf_dataset.shape[0]
