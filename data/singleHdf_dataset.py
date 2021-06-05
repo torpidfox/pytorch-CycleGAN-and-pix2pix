@@ -42,7 +42,8 @@ class SingleHdfDataset(BaseDataset):
 
         hdf_file = h5py.File(opt.dataroot + f'/train{opt.hdf_dataset}.hdf', 'r')['volumes']
         self.hdf_dataset = hdf_file.get('raw')[()]
-        self.A_paths = sorted(make_dataset(opt.dataroot, opt.max_dataset_size))
+        self.dataroot = opt.dataroot
+        self.hdf_label = opt.hdf_dataset
         input_nc = self.opt.output_nc if self.opt.direction == 'BtoA' else self.opt.input_nc
         self.transform = get_transform(opt, grayscale=(input_nc == 1))
 
