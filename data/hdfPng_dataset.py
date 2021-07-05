@@ -58,7 +58,6 @@ class HdfPngDataset(BaseDataset):
         """
         # save the option and dataset root
         BaseDataset.__init__(self, opt)
-        print(opt.dataroot)
         self.dataroot = opt.dataroot
         self.hdf_label = opt.hdf_dataset
         self.png_label = 'B' if opt.hdf_dataset == 'A' else 'A'
@@ -69,7 +68,7 @@ class HdfPngDataset(BaseDataset):
         self.png_size = len(self.png_image_paths)
         
         self.transform_hdf = get_transform(self.opt, grayscale=True, noise=self.opt.aug_noise)
-        self.transform_png = get_transform(self.opt, scale=opt.aug_scale, grayscale=True)
+        self.transform_png = get_transform(self.opt, scale=opt.aug_scale, grayscale=True, noise=False)
 
     def __getitem__(self, index):
         """Return a data point and its metadata information.

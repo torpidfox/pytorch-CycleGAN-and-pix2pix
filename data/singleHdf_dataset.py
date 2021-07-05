@@ -61,7 +61,7 @@ class SingleHdfDataset(BaseDataset):
         hdf_image = Image.fromarray(self.hdf_dataset[hdf_idx])
         hdf = self.transform(hdf_image)
         
-        return {'A': hdf, 'A_paths': self.dataroot + f'/trainA+_{hdf_idx}.png'}
+        return {'A': hdf, 'A_paths': self.dataroot + f'/trainA_{hdf_idx}.png'}
 
     def __len__(self):
         """Return the total number of images in the dataset."""
